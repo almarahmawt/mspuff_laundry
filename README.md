@@ -6,11 +6,13 @@ MS. Puff Laundry adalah aplikasi web yang dirancang untuk mempermudah pengelolaa
 
 * **Vite** - Build tool yang cepat dan efisien.
 * **React JS** - Library JavaScript untuk membangun antarmuka pengguna yang interaktif.
+* **Strapi** - Headless CMS yang mudah digunakan untuk mengatur data konten.
 
 ## Fitur
 
 * Menampilkan Layanan Laundry
 * Pesan Layanan Redirect to Whattsapp
+* Mengatur data kontent web
 
 ## Cara Menjalankan Proyek
 
@@ -46,25 +48,16 @@ Pastikan Anda sudah menginstal **Node.js** dan **npm** di perangkat Anda.
 ```
 ms-puff-laundry/
 │
-├── public/             # Static assets
-│
-├── src/
-│   ├── components/     # Komponen React
-│   ├── pages/          # Halaman aplikasi
-│   ├── App.jsx         # Entry point aplikasi
-│   └── main.jsx        # Inisialisasi React DOM
-│
-├── index.html          # Template HTML utama
-├── package.json        # Konfigurasi npm
-└── vite.config.js      # Konfigurasi Vite
+├── backend/             
+├── frontend
+├── README.md         
 ```
 
 ## Pengembangan Selanjutnya
 
-* Integrasi Backend API (Express/Node.js atau lainnya)
-* Fitur manajemen user
-* Dashboard admin
-* Notifikasi status laundry
+* Memperbagus Style Web Frontend
+* Tampilan Laporan Omset untuk Owner
+* Memperbaiki Tampilan Admin Panel
 
 ## Kontribusi
 
