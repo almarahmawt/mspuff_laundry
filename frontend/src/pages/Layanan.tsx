@@ -1,52 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
+import { getKategoriLayananWithLayanan } from "../lib/fetch";
 
-const DetailLayanan = [
-  {
-    kategori: "Cuci Satuan",
-    layanan: [
-      {
-        nama_layanan: "Cuci Sepatu",
-        harga: "RP. 15.000 - 20.000",
-        satuan: "Pcs",
-        estimasi: null,
-        description: `Bersihkan dan segarkan kembali sepatu favorit Anda dengan layanan 
-          Cuci Sepatu Profesional dari kami. Kami menggunakan teknik khusus dan
-          bahan berkualitas tinggi untuk memastikan setiap noda dan kotoran terangkat 
-          sempurna tanpa merusak material sepatu.`,
-      },
-      {
-        nama_layanan: "Cuci Helm",
-        harga: "RP. 10.000",
-        satuan: "Pcs",
-        estimasi: "1 Hari",
-        description: `Bersihkan helm Anda secara menyeluruh dengan teknik khusus 
-          yang aman dan efektif, memastikan setiap bagian bersih dan nyaman dipakai.`,
-      },
-    ],
-  },
-  {
-    kategori: "Cuci + Setrika",
-    layanan: [
-      {
-        nama_layanan: "Reguler",
-        harga: "RP. 7.000",
-        satuan: "kg",
-        estimasi: "2 - 3 Hari",
-        description: `Cuci dan setrika pakaian Anda dengan rapi, bersih, dan wangi.`,
-      },
-      {
-        nama_layanan: "Express",
-        harga: "RP. 10.000",
-        satuan: "kg",
-        estimasi: "1 Hari",
-        description: `Layanan express untuk Anda yang membutuhkan pakaian bersih 
-          dalam waktu cepat dan tetap berkualitas.`,
-      },
-    ],
-  },
-];
+interface KategoriLayanan {
+  nama_kategori: string;
+  layanans: {
+    nama: string;
+    deskripsi: string;
+    satuan: string;
+    estimasi_waktu: string;
+    harga: number;
+  }[];
+}
+
+interface LayananProps {
+  data: KategoriLayanan[];
+}
 
 const footer = {
   alamat: `Jl. Sadarmanah No.155, Cibeber 
@@ -54,15 +24,52 @@ const footer = {
               Jawa Barat 15032`,
 };
 
-const Layanan = () => {
-  // Inisialisasi state dengan index pertama dari setiap kategori
-  const initialState = DetailLayanan.reduce((acc, _, index) => {
-    acc[index] = 0; // Set index pertama sebagai default
-    return acc;
-  }, {} as Record<number, number>);
+// Fungsi untuk format rupiah
+const formatRupiah = (number: number): string => {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(number);
+};
 
-  const [activeLayanan, setActiveLayanan] =
-    useState<Record<number, number>>(initialState);
+export default function Layanan() {
+  const [layanan, setLayanan] = useState<LayananProps>({
+    data: [],
+  });
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Pindahkan semua useState ke atas, sebelum kondisi apapun
+  const [activeLayanan, setActiveLayanan] = useState<Record<number, number>>(
+    {}
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const layananData = await getKategoriLayananWithLayanan();
+        setLayanan(layananData);
+
+        // Inisialisasi activeLayanan setelah data berhasil dimuat
+        const initialState = layananData.data.reduce(
+          (acc: Record<number, number>, _: any, index: number) => {
+            acc[index] = 0; // Set index pertama sebagai default
+            return acc;
+          },
+          {}
+        );
+
+        setActiveLayanan(initialState);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Fungsi untuk mengubah index layanan aktif per kategori
   const handleSelectLayanan = (categoryIndex: number, layananIndex: number) => {
@@ -72,18 +79,32 @@ const Layanan = () => {
     }));
   };
 
+  // Tampilkan loading state jika data masih diambil
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen items-center justify-center">
+        <p className="text-pink-600 font-medium">Loading...</p>
+      </div>
+    );
+  }
+
+  console.log(layanan);
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <section className="py-10">
         <div className="container mx-auto px-4">
-          {DetailLayanan.map((item, categoryIndex) => (
+          {layanan.data.map((item, categoryIndex) => (
             <div key={categoryIndex} className="px-2 pb-10">
-              <h1 className="text-2xl text-left mb-4">{item.kategori}</h1>
+              {categoryIndex !== 0 ? (
+                <div className="border-t-2 border-pink-300 mb-8"/>
+              ) : null}
+              <h1 className="text-2xl text-left mb-4">{item.nama_kategori}</h1>
 
               {/* Tombol untuk memilih layanan */}
-              <div className="flex w-full my-5 p-5 bg-pink-100 gap-2">
-                {item.layanan.map((layanan, layananIndex) => (
+              <div className="relative flex w-full my-5 p-5 bg-pink-100 gap-2 overflow-x-auto">
+                {item.layanans.map((layanan, layananIndex) => (
                   <button
                     key={layananIndex}
                     onClick={() =>
@@ -95,44 +116,52 @@ const Layanan = () => {
                         : "bg-white text-pink-400"
                     }`}
                   >
-                    {layanan.nama_layanan}
+                    {layanan.nama}
                   </button>
                 ))}
               </div>
 
               {/* Detail Layanan yang dipilih */}
-              {activeLayanan[categoryIndex] !== undefined && (
-                <div className="py-4">
-                  <h2 className="text-xl">
-                    {item.layanan[activeLayanan[categoryIndex]].nama_layanan}
-                  </h2>
-                  <div className="flex gap-5 pt-4">
-                    <p>
-                      {item.layanan[activeLayanan[categoryIndex]].harga} /{" "}
-                      {item.layanan[activeLayanan[categoryIndex]].satuan}
-                    </p>
-                    {item.layanan[activeLayanan[categoryIndex]].estimasi && (
+              {activeLayanan[categoryIndex] !== undefined &&
+                item.layanans[activeLayanan[categoryIndex]] && (
+                  <div className="py-4">
+                    <h2 className="text-xl">
+                      {item.layanans[activeLayanan[categoryIndex]].nama}
+                    </h2>
+                    <div className="flex gap-5 pt-4">
                       <p>
-                        Estimasi (
-                        {item.layanan[activeLayanan[categoryIndex]].estimasi})
+                        {formatRupiah(
+                          item.layanans[activeLayanan[categoryIndex]].harga
+                        )}{" "}
+                        / {item.layanans[activeLayanan[categoryIndex]].satuan}
                       </p>
-                    )}
+                      {item.layanans[activeLayanan[categoryIndex]]
+                        .estimasi_waktu && (
+                        <p>
+                          Estimasi (
+                          {
+                            item.layanans[activeLayanan[categoryIndex]]
+                              .estimasi_waktu
+                          }
+                          )
+                        </p>
+                      )}
+                    </div>
+                    <p className="py-4">
+                      {item.layanans[activeLayanan[categoryIndex]].deskripsi}
+                    </p>
+                    <a
+                      href={`https://wa.me/${import.meta.env.VITE_NO_WHATSAPP}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block"
+                    >
+                      <button className="bg-pink-400 text-white px-4 py-2 text-xl rounded hover:bg-pink-600">
+                        Pesan Sekarang
+                      </button>
+                    </a>
                   </div>
-                  <p className="py-4">
-                    {item.layanan[activeLayanan[categoryIndex]].description}
-                  </p>
-                  <a
-                    href={`https://wa.me/6281221874683`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block"
-                  >
-                    <button className="bg-pink-400 text-white px-4 py-2 text-xl rounded hover:bg-pink-600">
-                      Pesan Sekarang
-                    </button>
-                  </a>
-                </div>
-              )}
+                )}
             </div>
           ))}
         </div>
@@ -140,6 +169,4 @@ const Layanan = () => {
       <Footer data={footer} />
     </div>
   );
-};
-
-export default Layanan;
+}

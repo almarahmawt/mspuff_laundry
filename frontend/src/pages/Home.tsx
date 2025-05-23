@@ -1,55 +1,37 @@
-import { Banknote, Truck, Clock3 } from "lucide-react";
+import { Banknote, Truck, Clock3, MoveRight } from "lucide-react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
+import { getLayananHome, getPromosi } from "../lib/fetch";
 
-// Data statis untuk website
-const laundryData = {
-  name: "Ms. Puff Laundry",
-  tagline:
-    "Hemat waktu dan pikiran Anda dengan berlangganan paket laundry bulanan kami. Kami menyediakan layanan pembersihan pakaian harian Anda dengan harga tetap setiap bulan. Dengan harga mulai 200 Ribu Per Bulan.",
-  contact: {
-    phone: "+62 859-7153-5431",
-    address: `Jl. Sadarmanah No.155, Cibeber 
-              Kec. Cimahi Sel., Kota Cimahi 
-              Jawa Barat 15032`,
-    operationalHours: "09:00 - 21:00",
-  },
-  services: [
-    {
-      id: 1,
-      name: "Cuci Karpet",
-      description: "15K - 25K /Pcs",
-      image: "/karpet.jpg",
-    },
-    {
-      id: 2,
-      name: "Setrika Reguler",
-      description: "5K /kg",
-      image: "/setrika.jpg",
-    },
-    {
-      id: 3,
-      name: "Cuci Satuan",
-      description: "7K - 10K /Pcs",
-      image: "/wash_pillow.jpg",
-    },
-    {
-      id: 4,
-      name: "Cuci Sepatu",
-      description: "15K - 25K /Pcs",
-      image: "/clean-shoes.jpg",
-    },
-  ],
-  packages: {
-    title: "Paket Bulanan, Kiloan dan Satuan",
-    description:
-      "Sekarang paket bulanan mulai dari 200K/Bulan, gratis antar jemput di wilayah cimahi dan kuota sampai 20 Kg",
-  },
-  social: {
-    instagram: "@ms.puff_laundry",
-    followers: 1250,
-  },
-};
+interface Layanan {
+  documentId: string;
+  nama: string;
+  deskripsi: string;
+  satuan: string;
+  estimasi_waktu: string;
+  harga: number;
+  image: {
+    name: string;
+    url: string;
+  };
+  kategori_layanan: {
+    nama_kategori: string;
+  };
+}
+
+interface Promosi {
+  title: string;
+  description: string;
+}
+
+interface LayananType {
+  data: Layanan[];
+}
+
+interface PromosiType {
+  data: Promosi;
+}
 
 const footer = {
   alamat: `l. Sadarmanah No.155, Cibeber 
@@ -57,7 +39,63 @@ const footer = {
               Jawa Barat 15032`,
 };
 
+const formatRupiah = (number: number): string => {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(number);
+};
+
+// Ubah dari async function ke regular function component
 export default function MsPuffLaundryHome() {
+  // Gunakan state untuk menyimpan data
+  const [layanans, setLayanans] = useState<LayananType>({ data: [] });
+  const [promosi, setPromosi] = useState<PromosiType>({
+    data: { title: "", description: "" },
+  });
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [layanansData, promosiData] = await Promise.all([
+          getLayananHome(),
+          getPromosi(),
+        ]);
+
+        setLayanans(layanansData);
+        setPromosi(promosiData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Tampilkan loading state jika data masih diambil
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen items-center justify-center">
+        <p className="text-pink-600 font-medium">Loading...</p>
+      </div>
+    );
+  }
+
+  const filteredLayanans: Layanan[] = layanans.data
+    .filter(
+      (item) =>
+        item.kategori_layanan.nama_kategori === "Cuci Satuan" &&
+        item.nama !== "Cuci Spesial"
+    )
+    .slice(0, 4);
+
+  console.log(promosi);
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navbar */}
@@ -67,10 +105,13 @@ export default function MsPuffLaundryHome() {
       <section className="bg-pink-400 text-white relative">
         <div className="container mx-auto px-4 py-12 pb-24">
           <h1 className="text-3xl font-bold mb-4 text-center">
-            {laundryData.name}
+            Ms. Puff Laundry
           </h1>
           <p className="text-center max-w-3xl mx-auto mb-8">
-            {laundryData.tagline}
+            Hemat waktu dan pikiran Anda dengan berlangganan paket laundry
+            bulanan kami. Kami menyediakan layanan pembersihan pakaian harian
+            Anda dengan harga tetap setiap bulan. Dengan harga mulai 200 Ribu
+            Per Bulan.
           </p>
         </div>
       </section>
@@ -122,27 +163,30 @@ export default function MsPuffLaundryHome() {
       <section className="md:pt-28 pb-10">
         <div className="container mx-auto px-4">
           <a href="/layanan">
-            <h2 className="text-2xl font-semibold mb-6 pb-3 text-gray-800">
+            <h2 className="group inline-flex items-center text-2xl font-semibold mb-6 pb-3 text-gray-800 transition-all duration-200 hover:text-pink-600">
               Layanan Kami
+              <MoveRight size={24} className="ml-2 opacity-0 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"/>
             </h2>
           </a>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {laundryData.services.map((service) => (
+            {filteredLayanans.map((item, index) => (
               <div
-                key={service.id}
+                key={index}
                 className="bg-white rounded overflow-hidden shadow hover:border-l-4 hover:border-l-pink-400 transition-all duration-200"
               >
                 <img
-                  src={service.image}
-                  alt={service.name}
+                  src={`${import.meta.env.VITE_URL_API}${item.image.url}`}
+                  alt={item.image.name}
                   className="w-full h-52 object-cover"
                 />
                 <div className="p-4">
                   <h3 className="font-medium text-pink-600 transition duration-300 hover:translate-x-1">
-                    {service.name}
+                    {item.nama}
                   </h3>
-                  <p className="text-sm text-gray-600">{service.description}</p>
+                  <p className="text-sm text-gray-600">
+                    {formatRupiah(item.harga)}
+                  </p>
                 </div>
               </div>
             ))}
@@ -155,20 +199,18 @@ export default function MsPuffLaundryHome() {
         <div className="container mx-auto px-4">
           <div className="bg-pink-400 rounded-lg p-6 text-white">
             <h2 className="text-2xl font-semibold mb-5">
-              {laundryData.packages.title}
+              {promosi.data.title}
             </h2>
-            <p className="mb-5 max-w-[600px]">
-              {laundryData.packages.description}
-            </p>
-            <a 
-              href={`https://wa.me/6281221874683`} 
-              target="_blank" 
+            <p className="mb-5 max-w-[600px]">{promosi.data.description}</p>
+            <a
+              href={`https://wa.me/${import.meta.env.VITE_NO_WHATSAPP}`}
+              target="_blank"
               rel="noopener noreferrer"
               className="inline-block"
             >
-            <button className="bg-white text-pink-600 px-6 py-2 rounded font-medium hover:bg-gray-100 transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-              Pesan Sekarang
-            </button>
+              <button className="bg-white text-pink-600 px-6 py-2 rounded font-medium hover:bg-gray-100 transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                Pesan Sekarang
+              </button>
             </a>
           </div>
         </div>
