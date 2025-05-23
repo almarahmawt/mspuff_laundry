@@ -1,0 +1,17 @@
+{
+  "kind": "singleType",
+  "collectionName": "omsets",
+  "info": {
+    "singularName": "omset",
+    "pluralName": "omsets",
+    "displayName": "Omset"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "total_omset": {
+      "type": "integer"
+    }
+  }
+}

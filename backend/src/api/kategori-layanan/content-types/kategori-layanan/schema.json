@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "kategori_layanans",
+  "info": {
+    "singularName": "kategori-layanan",
+    "pluralName": "kategori-layanans",
+    "displayName": "Kategori Layanan"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "nama_kategori": {
+      "type": "string"
+    },
+    "deskripsi": {
+      "type": "text"
+    },
+    "layanans": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::layanan.layanan",
+      "mappedBy": "kategori_layanan"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "transaksis",
+  "info": {
+    "singularName": "transaksi",
+    "pluralName": "transaksis",
+    "displayName": "Transaksi",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "tanggal_pesan": {
+      "type": "date"
+    },
+    "tanggal_selesai": {
+      "type": "date"
+    },
+    "status_pembayaran": {
+      "type": "string"
+    },
+    "status_pengerjaan": {
+      "type": "string"
+    },
+    "total_harga": {
+      "type": "integer"
+    },
+    "catatan": {
+      "type": "string"
+    },
+    "pelanggan": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::pelanggan.pelanggan",
+      "inversedBy": "transaksis"
+    },
+    "detail_transaksis": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::detail-transaksi.detail-transaksi",
+      "mappedBy": "transaksi"
+    }
+  }
+}

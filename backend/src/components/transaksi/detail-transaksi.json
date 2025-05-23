@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_transaksi_detail_transaksis",
+  "info": {
+    "displayName": "Detail_Transaksi",
+    "icon": "archive",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "jumlah": {
+      "type": "integer"
+    },
+    "subtotal": {
+      "type": "integer"
+    },
+    "layanan": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::layanan.layanan"
+    }
+  }
+}

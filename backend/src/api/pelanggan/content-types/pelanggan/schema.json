@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pelanggans",
+  "info": {
+    "singularName": "pelanggan",
+    "pluralName": "pelanggans",
+    "displayName": "Pelanggan"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "nama": {
+      "type": "string"
+    },
+    "nomor_telepon": {
+      "type": "string"
+    },
+    "alamat": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "tanggal_register": {
+      "type": "date"
+    },
+    "status_member": {
+      "type": "boolean"
+    },
+    "transaksis": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::transaksi.transaksi",
+      "mappedBy": "pelanggan"
+    }
+  }
+}

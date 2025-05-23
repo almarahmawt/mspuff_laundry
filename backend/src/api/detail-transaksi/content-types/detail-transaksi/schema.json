@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "detail_transaksis",
+  "info": {
+    "singularName": "detail-transaksi",
+    "pluralName": "detail-transaksis",
+    "displayName": "Detail_Transaksi"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "layanan": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::layanan.layanan",
+      "inversedBy": "detail_transaksis"
+    },
+    "jumlah": {
+      "type": "integer"
+    },
+    "subtotal": {
+      "type": "integer"
+    },
+    "transaksi": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::transaksi.transaksi",
+      "inversedBy": "detail_transaksis"
+    }
+  }
+}

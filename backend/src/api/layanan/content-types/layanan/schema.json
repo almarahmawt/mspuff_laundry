@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "layanans",
+  "info": {
+    "singularName": "layanan",
+    "pluralName": "layanans",
+    "displayName": "Layanan",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "nama": {
+      "type": "string"
+    },
+    "deskripsi": {
+      "type": "text"
+    },
+    "satuan": {
+      "type": "string"
+    },
+    "harga": {
+      "type": "integer"
+    },
+    "estimasi_waktu": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "kategori_layanan": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::kategori-layanan.kategori-layanan",
+      "inversedBy": "layanans"
+    },
+    "detail_transaksis": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::detail-transaksi.detail-transaksi",
+      "mappedBy": "layanan"
+    }
+  }
+}
