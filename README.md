@@ -60,6 +60,7 @@ Pastikan Anda sudah menginstal **Node.js** dan **npm** di perangkat Anda.
    ```bash
    git clone https://github.com/username/ms-puff-laundry.git
    cd ms-puff-laundry
+   cd frontend
    ```
 
 2. Install dependencies:
