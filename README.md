@@ -18,6 +18,43 @@ MS. Puff Laundry adalah aplikasi web yang dirancang untuk mempermudah pengelolaa
 
 Pastikan Anda sudah menginstal **Node.js** dan **npm** di perangkat Anda.
 
+### Menjalankan Projek Backend
+
+1. Clone repository:
+
+   ```bash
+   git clone https://github.com/username/ms-puff-laundry.git
+   cd ms-puff-laundry
+   cd backend
+   ```
+
+2. Menyiapkan database:
+
+   Jika sudah memiliki file database projek backend ini bisa langsung di import saja pada database server MySQL nya. Jika belum maka ikuti langkah ini:
+
+   * Buat database pada server MySQL, sesuaikan nama database dengan nama database yang diisi di file .env projek backend.
+   * Jika sudah, maka lanjut pada langkah selanjutnya
+
+3. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+4. Jalankan aplikasi:
+
+   ```bash
+   npm run develop
+   ```
+
+5. Buka di browser:
+
+   ```
+   http://localhost:1337
+   ```
+
+### Menjalankan Projek Frontend
+
 1. Clone repository:
 
    ```bash
@@ -42,6 +79,8 @@ Pastikan Anda sudah menginstal **Node.js** dan **npm** di perangkat Anda.
    ```
    http://localhost:5173
    ```
+
+**Catatan: Buat file .env pada masing-masing projek dan isi variable environment sesuai yang ada pada file .env.example**
 
 ## Struktur Proyek
 
