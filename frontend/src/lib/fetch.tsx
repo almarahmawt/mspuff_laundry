@@ -44,3 +44,29 @@ export async function getKategoriLayananWithLayanan() {
 
   return data;
 }
+
+// Get data Layanan for Owner
+export async function getLayananWithOmset() {
+  const query = qs.stringify({
+    populate: {
+      layanans: {
+        fields: ["nama", "harga"],
+        populate: {
+          detail_transaksis: {
+            fields: ["jumlah", "subtotal", "createdAt"],
+          },
+        },
+      },
+    },
+  });
+
+  const res = await fetch(`${apiUrl}/api/kategori-layanans?${query}`);
+  const data = await res.json();
+
+  console.log("Calling: ", `${apiUrl}/api/kategori-layanans?${query}`);
+  console.log("data: ", data);
+  
+  
+
+  return data;
+}

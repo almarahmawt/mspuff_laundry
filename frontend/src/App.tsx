@@ -2,6 +2,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home';
 import Layanan from './pages/Layanan';
+import PreviewOwner from './pages/Preview';
 
 const router = createBrowserRouter([
   {
@@ -11,6 +12,10 @@ const router = createBrowserRouter([
   {
     path: "/layanan",
     element: <Layanan />,
+  },
+  {
+    path: "/preview",
+    element: <PreviewOwner />,
   },
 ]);
 
