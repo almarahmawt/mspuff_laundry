@@ -13,6 +13,7 @@ MS. Puff Laundry adalah aplikasi web yang dirancang untuk mempermudah pengelolaa
 * Menampilkan Layanan Laundry
 * Pesan Layanan Redirect to Whattsapp
 * Mengatur data kontent web
+* Menampilkan halaman laporan omset untuk owner
 
 ## Cara Menjalankan Proyek
 
@@ -96,7 +97,6 @@ ms-puff-laundry/
 ## Pengembangan Selanjutnya
 
 * Memperbagus Style Web Frontend
-* Tampilan Laporan Omset untuk Owner
 * Memperbaiki Tampilan Admin Panel
 
 ## Kontribusi
