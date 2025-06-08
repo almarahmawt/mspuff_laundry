@@ -118,18 +118,7 @@ export default function PreviewOwner() {
     ?.filter((kategori) =>
       selectedKategori ? kategori.nama_kategori === selectedKategori : true
     )
-    .map((kategori) => ({
-      ...kategori,
-      layanans: kategori.layanans.map((layanan) => ({
-        ...layanan,
-        detail_transaksis: layanan.detail_transaksis.filter((dt) => {
-          // Cari transaksi yang ada di filteredOmset berdasarkan documentId
-          return filteredOmset?.some(
-            (omset) => omset.documentId === dt.documentId
-          );
-        }),
-      })),
-    }));
+    
 
   const totalOmset = filteredOmset?.reduce(
     (total, item) => total + item.total_harga,
@@ -336,8 +325,6 @@ export default function PreviewOwner() {
                         (item) => isWithinRange(item.createdAt)
                       );
 
-                      console.log(filteredOmsets);
-
                       const totalSubtotal = filteredOmset
                         ? filteredOmsets.reduce(
                             (sum, dt) => sum + dt.subtotal,
@@ -359,7 +346,7 @@ export default function PreviewOwner() {
                             {formatCurrency(totalSubtotal)}
                           </p>
                           <p className="text-sm text-gray-500">
-                            Disewa: {layanan.detail_transaksis.length} kali
+                            Disewa: {filteredOmsets.length} kali
                           </p>
                         </div>
                       );
