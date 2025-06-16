@@ -600,8 +600,13 @@ export interface ApiTransaksiTransaksi extends Struct.CollectionTypeSchema {
       'api::pelanggan.pelanggan'
     >;
     publishedAt: Schema.Attribute.DateTime;
-    status_pembayaran: Schema.Attribute.String;
-    status_pengerjaan: Schema.Attribute.String;
+    status_pembayaran: Schema.Attribute.Enumeration<
+      ['Belum Bayar', 'Sudah Bayar']
+    >;
+    status_pengerjaan: Schema.Attribute.Enumeration<
+      ['Dalam Pengerjaan', 'Selesai']
+    > &
+      Schema.Attribute.DefaultTo<'Dalam Pengerjaan'>;
     tanggal_pesan: Schema.Attribute.Date;
     tanggal_selesai: Schema.Attribute.Date;
     total_harga: Schema.Attribute.Integer;

@@ -17,12 +17,6 @@
     "tanggal_selesai": {
       "type": "date"
     },
-    "status_pembayaran": {
-      "type": "string"
-    },
-    "status_pengerjaan": {
-      "type": "string"
-    },
     "total_harga": {
       "type": "integer"
     },
@@ -40,6 +34,21 @@
       "relation": "oneToMany",
       "target": "api::detail-transaksi.detail-transaksi",
       "mappedBy": "transaksi"
+    },
+    "status_pembayaran": {
+      "type": "enumeration",
+      "enum": [
+        "Belum Bayar",
+        "Sudah Bayar"
+      ]
+    },
+    "status_pengerjaan": {
+      "type": "enumeration",
+      "enum": [
+        "Dalam Pengerjaan",
+        "Selesai"
+      ],
+      "default": "Dalam Pengerjaan"
     }
   }
 }
