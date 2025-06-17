@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import { getKategoriLayananWithLayanan } from "../lib/fetch";
@@ -45,6 +47,9 @@ export default function Layanan() {
     {}
   );
 
+  const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem("user");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -77,6 +82,19 @@ export default function Layanan() {
       ...prev,
       [categoryIndex]: layananIndex,
     }));
+  };
+
+  // Handler untuk tombol pesan sekarang
+  const handleOrderClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      toast.error(
+        "Anda belum login, login atau registrasi terlebih dahulu untuk memesan."
+      );
+      setTimeout(() => {
+        navigate("/authentication");
+      }, 1200);
+    }
   };
 
   // Tampilkan loading state jika data masih diambil
@@ -156,7 +174,10 @@ export default function Layanan() {
                       rel="noopener noreferrer"
                       className="inline-block"
                     >
-                      <button className="bg-pink-400 text-white px-4 py-2 text-xl rounded hover:bg-pink-600">
+                      <button
+                        className="bg-pink-400 text-white px-4 py-2 text-xl rounded hover:bg-pink-600"
+                        onClick={handleOrderClick}
+                      >
                         Pesan Sekarang
                       </button>
                     </a>

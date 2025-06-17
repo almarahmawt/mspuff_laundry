@@ -1,5 +1,7 @@
 import { Banknote, Truck, Clock3, MoveRight } from "lucide-react";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import { getLayananHome, getPromosi } from "../lib/fetch";
@@ -50,6 +52,8 @@ const formatRupiah = (number: number): string => {
 
 // Ubah dari async function ke regular function component
 export default function MsPuffLaundryHome() {
+  const navigate = useNavigate(); 
+
   // Gunakan state untuk menyimpan data
   const [layanans, setLayanans] = useState<LayananType>({ data: [] });
   const [promosi, setPromosi] = useState<PromosiType>({
@@ -94,7 +98,19 @@ export default function MsPuffLaundryHome() {
     )
     .slice(0, 4);
 
-  console.log(promosi);
+  const isLoggedIn = !!localStorage.getItem("user");
+
+  const handleOrderClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      toast.error(
+        "Anda belum login, login atau registrasi terlebih dahulu untuk memesan."
+      );
+      setTimeout(() => {
+        navigate("/authentication");
+      }, 1200);
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -208,7 +224,10 @@ export default function MsPuffLaundryHome() {
               rel="noopener noreferrer"
               className="inline-block"
             >
-              <button className="bg-white text-pink-600 px-6 py-2 rounded font-medium hover:bg-gray-100 transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+              <button 
+                className="bg-white text-pink-600 px-6 py-2 rounded font-medium hover:bg-gray-100 transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+                onClick={handleOrderClick}
+              >
                 Pesan Sekarang
               </button>
             </a>

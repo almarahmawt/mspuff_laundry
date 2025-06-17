@@ -63,10 +63,13 @@ export async function getLayananWithOmset() {
   const res = await fetch(`${apiUrl}/api/kategori-layanans?${query}`);
   const data = await res.json();
 
-  console.log("Calling: ", `${apiUrl}/api/kategori-layanans?${query}`);
-  console.log("data: ", data);
-  
-  
+  return data;
+}
 
+// Get data Layanan for Owner
+export async function getPelanggan(documentId: string) {
+  const res = await fetch(`${apiUrl}/api/pelanggans?filters[documentId][$eq]=${documentId}`);
+  const data = await res.json();
+  
   return data;
 }

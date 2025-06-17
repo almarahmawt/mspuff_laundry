@@ -509,6 +509,7 @@ export interface ApiOmsetOmset extends Struct.SingleTypeSchema {
 export interface ApiPelangganPelanggan extends Struct.CollectionTypeSchema {
   collectionName: 'pelanggans';
   info: {
+    description: '';
     displayName: 'Pelanggan';
     pluralName: 'pelanggans';
     singularName: 'pelanggan';
@@ -530,6 +531,7 @@ export interface ApiPelangganPelanggan extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     nama: Schema.Attribute.String;
     nomor_telepon: Schema.Attribute.String;
+    password: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     status_member: Schema.Attribute.Boolean;
     tanggal_register: Schema.Attribute.Date;

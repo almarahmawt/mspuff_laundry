@@ -4,7 +4,8 @@
   "info": {
     "singularName": "pelanggan",
     "pluralName": "pelanggans",
-    "displayName": "Pelanggan"
+    "displayName": "Pelanggan",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -33,6 +34,9 @@
       "relation": "oneToMany",
       "target": "api::transaksi.transaksi",
       "mappedBy": "pelanggan"
+    },
+    "password": {
+      "type": "string"
     }
   }
 }
