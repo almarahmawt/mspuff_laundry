@@ -604,7 +604,8 @@ export interface ApiTransaksiTransaksi extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     status_pembayaran: Schema.Attribute.Enumeration<
       ['Belum Bayar', 'Sudah Bayar']
-    >;
+    > &
+      Schema.Attribute.DefaultTo<'Belum Bayar'>;
     status_pengerjaan: Schema.Attribute.Enumeration<
       ['Dalam Pengerjaan', 'Selesai']
     > &

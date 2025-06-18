@@ -40,7 +40,8 @@
       "enum": [
         "Belum Bayar",
         "Sudah Bayar"
-      ]
+      ],
+      "default": "Belum Bayar"
     },
     "status_pengerjaan": {
       "type": "enumeration",

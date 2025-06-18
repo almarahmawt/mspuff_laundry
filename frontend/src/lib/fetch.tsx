@@ -68,8 +68,59 @@ export async function getLayananWithOmset() {
 
 // Get data Layanan for Owner
 export async function getPelanggan(documentId: string) {
-  const res = await fetch(`${apiUrl}/api/pelanggans?filters[documentId][$eq]=${documentId}`);
+  const res = await fetch(
+    `${apiUrl}/api/pelanggans?filters[documentId][$eq]=${documentId}`
+  );
   const data = await res.json();
-  
+
+  return data;
+}
+
+// Get data Layanan by documentId
+export async function getAllLayanans() {
+  const res = await fetch(`${apiUrl}/api/layanans`);
+  const data = await res.json();
+
+  return data;
+}
+
+// Get data Layanan by documentId
+export async function getLayananByDocumentId(documentId: string) {
+  const res = await fetch(
+    `${apiUrl}/api/layanans?filters[documentId][$eq]=${documentId}`
+  );
+  const data = await res.json();
+
+  return data;
+}
+
+// Get data Layanan by documentId
+export async function getTransaksiWithDetailTransaksi(documentId: string) {
+  const query = qs.stringify({
+    filters: {
+      pelanggan: {
+        documentId: {
+          $eq: documentId,
+        },
+      },
+    },
+    populate: {
+      pelanggan: {
+        fields: ["nama", "email"],
+      },
+      detail_transaksis: {
+        populate: {
+          layanan: {
+            fields: ["nama", "satuan", "harga"],
+          },
+        },
+        fields: ["jumlah", "subtotal"],
+      },
+    },
+  });
+
+  const res = await fetch(`${apiUrl}/api/transaksis?${query}`);
+  const data = await res.json();
+
   return data;
 }

@@ -4,10 +4,12 @@ import { toast } from "sonner";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import { getKategoriLayananWithLayanan } from "../lib/fetch";
+import { OrderDialog } from "@/components/create-transaksi";
 
 interface KategoriLayanan {
   nama_kategori: string;
   layanans: {
+    documentId: string
     nama: string;
     deskripsi: string;
     satuan: string;
@@ -41,14 +43,17 @@ export default function Layanan() {
     data: [],
   });
   const [loading, setLoading] = useState<boolean>(true);
-
-  // Pindahkan semua useState ke atas, sebelum kondisi apapun
   const [activeLayanan, setActiveLayanan] = useState<Record<number, number>>(
     {}
   );
+  const [showDialog, setShowDialog] = useState(false); // Tambahkan state dialog
+  const [selectedLayanan, setSelectedLayanan] = useState<string | null>(null); // Untuk info layanan
 
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem("user");
+
+  const user = localStorage.getItem("user");
+  const parsedUser = user ? JSON.parse(user) : null;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,16 +90,22 @@ export default function Layanan() {
   };
 
   // Handler untuk tombol pesan sekarang
-  const handleOrderClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleOrderClick = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    layananNama: string
+  ) => {
+    e.preventDefault();
     if (!isLoggedIn) {
-      e.preventDefault();
       toast.error(
         "Anda belum login, login atau registrasi terlebih dahulu untuk memesan."
       );
       setTimeout(() => {
         navigate("/authentication");
       }, 1200);
+      return;
     }
+    setSelectedLayanan(layananNama);
+    setShowDialog(true);
   };
 
   // Tampilkan loading state jika data masih diambil
@@ -116,7 +127,7 @@ export default function Layanan() {
           {layanan.data.map((item, categoryIndex) => (
             <div key={categoryIndex} className="px-2 pb-10">
               {categoryIndex !== 0 ? (
-                <div className="border-t-2 border-pink-300 mb-8"/>
+                <div className="border-t-2 border-pink-300 mb-8" />
               ) : null}
               <h1 className="text-2xl text-left mb-4">{item.nama_kategori}</h1>
 
@@ -168,19 +179,26 @@ export default function Layanan() {
                     <p className="py-4">
                       {item.layanans[activeLayanan[categoryIndex]].deskripsi}
                     </p>
-                    <a
-                      href={`https://wa.me/${import.meta.env.VITE_NO_WHATSAPP}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block"
+                    <button
+                      className="bg-pink-400 text-white px-4 py-2 text-xl rounded hover:bg-pink-600"
+                      onClick={(e) =>
+                        handleOrderClick(
+                          e,
+                          item.layanans[activeLayanan[categoryIndex]]?.documentId
+                        )
+                      }
                     >
-                      <button
-                        className="bg-pink-400 text-white px-4 py-2 text-xl rounded hover:bg-pink-600"
-                        onClick={handleOrderClick}
-                      >
-                        Pesan Sekarang
-                      </button>
-                    </a>
+                      Pesan Sekarang
+                    </button>
+                    {/* Ganti dengan OrderDialog, hanya render jika parsedUser ada */}
+                    {parsedUser && (
+                      <OrderDialog
+                        open={showDialog}
+                        onOpenChange={setShowDialog}
+                        layananId={selectedLayanan}
+                        pelangganId={parsedUser.documentId}
+                      />
+                    )}
                   </div>
                 )}
             </div>

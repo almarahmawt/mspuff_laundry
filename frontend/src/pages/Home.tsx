@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import { getLayananHome, getPromosi } from "../lib/fetch";
+import { OrderDialog } from "@/components/create-transaksi";
 
 interface Layanan {
   documentId: string;
@@ -60,6 +61,7 @@ export default function MsPuffLaundryHome() {
     data: { title: "", description: "" },
   });
   const [loading, setLoading] = useState<boolean>(true);
+  const [showDialog, setShowDialog] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -100,6 +102,9 @@ export default function MsPuffLaundryHome() {
 
   const isLoggedIn = !!localStorage.getItem("user");
 
+  const user = localStorage.getItem("user");
+  const parsedUser = user ? JSON.parse(user) : null;
+
   const handleOrderClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!isLoggedIn) {
       e.preventDefault();
@@ -109,6 +114,9 @@ export default function MsPuffLaundryHome() {
       setTimeout(() => {
         navigate("/authentication");
       }, 1200);
+    } else {
+      e.preventDefault();
+      setShowDialog(true);
     }
   };
 
@@ -218,25 +226,28 @@ export default function MsPuffLaundryHome() {
               {promosi.data.title}
             </h2>
             <p className="mb-5 max-w-[600px]">{promosi.data.description}</p>
-            <a
-              href={`https://wa.me/${import.meta.env.VITE_NO_WHATSAPP}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block"
+            <button
+              className="bg-white text-pink-600 px-6 py-2 rounded font-medium hover:bg-gray-100 transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+              onClick={handleOrderClick}
             >
-              <button 
-                className="bg-white text-pink-600 px-6 py-2 rounded font-medium hover:bg-gray-100 transition-transform duration-300 hover:scale-105 hover:shadow-lg"
-                onClick={handleOrderClick}
-              >
-                Pesan Sekarang
-              </button>
-            </a>
+              Pesan Sekarang
+            </button>
           </div>
         </div>
       </section>
 
       {/* Footer */}
       <Footer data={footer} />
+
+      {/* Tambahkan OrderDialog di luar return utama */}
+      {parsedUser && (
+        <OrderDialog
+          open={showDialog}
+          onOpenChange={setShowDialog}
+          layananId={null}
+          pelangganId={parsedUser.documentId}
+        />
+      )}
     </div>
   );
 }

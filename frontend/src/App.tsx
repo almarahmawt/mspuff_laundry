@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Layanan from './pages/Layanan';
 import PreviewOwner from './pages/Preview';
 import RegistrationPage from './pages/Registration';
+import RiwayatTransaksi from './pages/RiwayatTransaksi';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/authentication",
     element: <RegistrationPage />,
+  },
+  {
+    path: "/riwayat-transaksi",
+    element: <RiwayatTransaksi />,
   },
 ]);
 

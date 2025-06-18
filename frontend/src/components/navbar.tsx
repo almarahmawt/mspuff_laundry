@@ -1,4 +1,4 @@
-import { Heart, Menu, User2, LogOut } from "lucide-react";
+import { Heart, Menu, User2, LogOut, Receipt } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -17,10 +17,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import DialogEditProfile from "@/components/edit-profile";
 import { getPelanggan } from "@/lib/fetch";
+import { OrderDialog } from "@/components/create-transaksi";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
+  const [showDialog, setShowDialog] = useState(false);
 
   useEffect(() => {
     const local = localStorage.getItem("user");
@@ -37,8 +39,6 @@ const Navbar = () => {
     }
   }, []);
 
-  console.log("Fetching user data for documentId:", user);
-
   const handleOrderClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!user) {
       e.preventDefault();
@@ -48,6 +48,9 @@ const Navbar = () => {
       setTimeout(() => {
         navigate("/authentication");
       }, 1200);
+    } else {
+      e.preventDefault();
+      setShowDialog(true);
     }
   };
 
@@ -64,7 +67,6 @@ const Navbar = () => {
     const updated = localStorage.getItem("user");
     setUser(updated ? JSON.parse(updated) : null);
   };
-  console.log("User data loaded:", user)
 
   const UserDropdown = (
     <DropdownMenu>
@@ -103,7 +105,7 @@ const Navbar = () => {
         </a>
 
         {/* Mobile Navigation */}
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <Sheet>
             <SheetTrigger asChild>
               <button className="text-gray-700">
@@ -127,6 +129,18 @@ const Navbar = () => {
                   />
                   <p className="text-gray-700">Layanan Kami</p>
                 </a>
+                {user && (
+                  <a
+                    href="/riwayat-transaksi"
+                    className="flex items-center gap-3 transition-all group"
+                  >
+                    <Receipt
+                      size={22}
+                      className="text-pink-400 group-hover:animate-bounce transition"
+                    />
+                    <p className="text-gray-700">Riwayat Transaksi</p>
+                  </a>
+                )}
                 <div className="flex gap-2 mt-4">
                   {!user ? (
                     <button
@@ -160,7 +174,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2">
           <a href="/layanan" className="group">
             <div className="flex items-center gap-3 px-4 py-1 transition-all">
               <Heart
@@ -170,6 +184,18 @@ const Navbar = () => {
               <p className="text-gray-700">Layanan Kami</p>
             </div>
           </a>
+          {/* Hanya tampilkan jika sudah login */}
+          {user && (
+            <a href="/riwayat-transaksi" className="group">
+              <div className="flex items-center gap-3 px-4 py-1 transition-all">
+                <Receipt
+                  size={22}
+                  className="text-pink-400 group-hover:animate-bounce transition"
+                />
+                <p className="text-gray-700">Riwayat Transaksi</p>
+              </div>
+            </a>
+          )}
           {!user ? (
             <button
               className="bg-pink-400 text-white px-4 py-2 rounded hover:bg-pink-600"
@@ -197,6 +223,15 @@ const Navbar = () => {
           )}
         </div>
       </div>
+      {/* Tambahkan OrderDialog di luar return utama */}
+      {user && (
+        <OrderDialog
+          open={showDialog}
+          onOpenChange={setShowDialog}
+          layananId={null}
+          pelangganId={user.documentId}
+        />
+      )}
     </nav>
   );
 };
