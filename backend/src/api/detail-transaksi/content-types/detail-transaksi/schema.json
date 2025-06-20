@@ -4,7 +4,8 @@
   "info": {
     "singularName": "detail-transaksi",
     "pluralName": "detail-transaksis",
-    "displayName": "Detail_Transaksi"
+    "displayName": "Detail_Transaksi",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true

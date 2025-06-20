@@ -377,6 +377,7 @@ export interface ApiDetailTransaksiDetailTransaksi
   extends Struct.CollectionTypeSchema {
   collectionName: 'detail_transaksis';
   info: {
+    description: '';
     displayName: 'Detail_Transaksi';
     pluralName: 'detail-transaksis';
     singularName: 'detail-transaksi';
@@ -580,7 +581,7 @@ export interface ApiTransaksiTransaksi extends Struct.CollectionTypeSchema {
     singularName: 'transaksi';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     catatan: Schema.Attribute.String;
