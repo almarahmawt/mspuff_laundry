@@ -383,7 +383,7 @@ export interface ApiDetailTransaksiDetailTransaksi
     singularName: 'detail-transaksi';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -460,6 +460,7 @@ export interface ApiLayananLayanan extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::detail-transaksi.detail-transaksi'
     >;
+    estimasi_selesai: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
     estimasi_waktu: Schema.Attribute.String;
     harga: Schema.Attribute.Integer;
     image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
@@ -592,6 +593,7 @@ export interface ApiTransaksiTransaksi extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::detail-transaksi.detail-transaksi'
     >;
+    estimasi_selesai: Schema.Attribute.Date;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',

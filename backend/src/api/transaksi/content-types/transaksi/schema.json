@@ -50,6 +50,9 @@
         "Selesai"
       ],
       "default": "Dalam Pengerjaan"
+    },
+    "estimasi_selesai": {
+      "type": "date"
     }
   }
 }

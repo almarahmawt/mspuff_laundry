@@ -48,6 +48,10 @@
       "relation": "oneToMany",
       "target": "api::detail-transaksi.detail-transaksi",
       "mappedBy": "layanan"
+    },
+    "estimasi_selesai": {
+      "type": "integer",
+      "default": 1
     }
   }
 }
