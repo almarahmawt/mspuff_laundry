@@ -172,13 +172,19 @@ export default {
       result.status_pembayaran !== previousStatusPembayaran;
 
     if (isPengerjaanSelesai && result.status_pengerjaan === "Selesai") {
-      const tanggal_selesai = new Date(
-        result.tanggal_selesai
-      ).toLocaleDateString("id-ID", {
+      const tanggal_selesai = new Date().toLocaleDateString("id-ID", {
         year: "numeric",
         month: "long",
         day: "numeric",
         weekday: "long",
+      });
+
+      // Update Tanggal Selesai 
+      await strapi.documents("api::transaksi.transaksi").update({
+        documentId: result.documentId,
+        data: {
+          tanggal_selesai: new Date(),
+        },
       });
 
       const templateParams = {
@@ -264,7 +270,6 @@ export default {
             weekday: "long",
           }
         ),
-        tanggal_opsi: `Tanggal Selesai : <strong>${estimasi_selesai}</strong>`,
         status: "<p>Status Pembayaran : <strong>Lunas</strong></p>",
         closing:
           "Kami sangat menghargai kepercayaan Anda menggunakan jasa Ms. Puff Laundry. Akan segera kami informasikan jika pesanan Anda telah selesai.",
