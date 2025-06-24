@@ -103,3 +103,10 @@ ms-puff-laundry/
 
 Kontribusi terbuka untuk siapa saja. Silakan fork repository ini dan buat pull request.
 
+## Akun Email
+Email : mspuff318@gmail.com
+Password : MsPuf59$
+
+## Akun Admin Strapi
+Username : mspuff@gmail.com
+Password : Mspuff326

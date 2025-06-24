@@ -89,7 +89,7 @@ export default {
           },
           body: JSON.stringify({
             service_id: process.env.SERVICE_ID,
-            template_id: "template_yoahzhp",
+            template_id: "template_ywuchl8",
             user_id: process.env.PUBLIC_KEY,
             accessToken: process.env.PRIVATE_KEY,
             template_params: templateParams,
@@ -220,7 +220,7 @@ export default {
             },
             body: JSON.stringify({
               service_id: process.env.SERVICE_ID,
-              template_id: "template_l40kspd",
+              template_id: "template_qd75xto",
               user_id: process.env.PUBLIC_KEY,
               accessToken: process.env.PRIVATE_KEY,
               template_params: templateParams,
@@ -286,7 +286,7 @@ export default {
             },
             body: JSON.stringify({
               service_id: process.env.SERVICE_ID,
-              template_id: "template_l40kspd",
+              template_id: "template_qd75xto",
               user_id: process.env.PUBLIC_KEY,
               accessToken: process.env.PRIVATE_KEY,
               template_params: templateParams,
