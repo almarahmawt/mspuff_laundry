@@ -166,6 +166,19 @@ export default {
         },
       });
 
+    console.log("Data with Pelanggan:", dataWithPelanggan);
+
+    // Siapkan detail_transaksis untuk EmailJS
+    const detailTransaksis = (dataWithPelanggan.detail_transaksis || []).map(
+      (item) => ({
+        layanan_nama: item.layanan?.nama || "-",
+        jumlah: item.jumlah,
+        subtotal: item.subtotal,
+      })
+    );
+
+    console.log("Detail Transaksi:", detailTransaksis);
+
     const isPengerjaanSelesai =
       result.status_pengerjaan !== previousStatusPengerjaan;
     const isPembayaranLunas =
@@ -187,6 +200,15 @@ export default {
         },
       });
 
+      const estimasi_selesai = new Date(
+        result.estimasi_selesai
+      ).toLocaleDateString("id-ID", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long",
+      });
+
       const templateParams = {
         pelanggan_nama: dataWithPelanggan.pelanggan.nama,
         email: dataWithPelanggan.pelanggan.email,
@@ -205,7 +227,12 @@ export default {
           }
         ),
         tanggal_opsi: `Tanggal Selesai : <strong>${tanggal_selesai}</strong>`,
+        tanggal_selesai: tanggal_selesai,
+        tanggal_estimasi: estimasi_selesai,
         status: "<p>Status Pengerjaan : <strong>Selesai</strong></p>",
+        total_harga: result.total_harga,
+        status_bayar: `<p>Status Pembayaran : <strong>${result.status_pembayaran}</strong></p>`,
+        detail_transaksis: detailTransaksis,
         closing: "Silahkan ambil pesanan Anda di toko kami.",
         no_whattsapp: process.env.NO_WHATTSAPP || "-",
       };
@@ -253,6 +280,15 @@ export default {
         weekday: "long",
       });
 
+      const tanggal_selesai = new Date(
+        result.tanggal_selesai
+      ).toLocaleDateString("id-ID", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long",
+      });
+
       const templateParams = {
         pelanggan_nama: dataWithPelanggan.pelanggan.nama,
         email: dataWithPelanggan.pelanggan.email,
@@ -270,7 +306,12 @@ export default {
             weekday: "long",
           }
         ),
-        status: "<p>Status Pembayaran : <strong>Lunas</strong></p>",
+        tanggal_estimasi: estimasi_selesai,
+        tanggal_selesai: tanggal_selesai,
+        total_harga: result.total_harga,
+        status: "<p>Status Pengerjaan : <strong>Selesai</strong></p>",
+        status_bayar: `<p>Status Pembayaran : <strong>${result.status_pembayaran}</strong></p>`,
+        detail_transaksis: detailTransaksis,
         closing:
           "Kami sangat menghargai kepercayaan Anda menggunakan jasa Ms. Puff Laundry. Akan segera kami informasikan jika pesanan Anda telah selesai.",
         no_whattsapp: process.env.NO_WHATTSAPP || "-",

@@ -609,6 +609,10 @@ export interface ApiTransaksiTransaksi extends Struct.CollectionTypeSchema {
       ['Belum Bayar', 'Sudah Bayar']
     > &
       Schema.Attribute.DefaultTo<'Belum Bayar'>;
+    status_pengambilan: Schema.Attribute.Enumeration<
+      ['Belum Diambil', 'Sudah Diambil']
+    > &
+      Schema.Attribute.DefaultTo<'Belum Diambil'>;
     status_pengerjaan: Schema.Attribute.Enumeration<
       ['Dalam Pengerjaan', 'Selesai']
     > &

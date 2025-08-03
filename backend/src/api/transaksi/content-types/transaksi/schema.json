@@ -51,6 +51,14 @@
       ],
       "default": "Dalam Pengerjaan"
     },
+    "status_pengambilan": {
+      "type": "enumeration",
+      "enum": [
+        "Belum Diambil",
+        "Sudah Diambil"
+      ],
+      "default": "Belum Diambil"
+    },
     "estimasi_selesai": {
       "type": "date"
     }
